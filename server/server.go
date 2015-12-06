@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"gitlab.com/c0dect/basic-rest-service/routers"
+	"github.com/c0dect/basic-rest-service/routers"
 )
 
 func init() {

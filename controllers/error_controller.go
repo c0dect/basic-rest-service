@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"gitlab.com/c0dect/basic-rest-service/models"
+	"github.com/c0dect/basic-rest-service/models"
 )
 
 var (

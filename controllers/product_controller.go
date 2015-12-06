@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"gitlab.com/c0dect/basic-rest-service/models"
+	"github.com/c0dect/basic-rest-service/models"
 
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/datastore"

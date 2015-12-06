@@ -3,7 +3,7 @@ package routers
 import (
 	"net/http"
 
-	"gitlab.com/c0dect/basic-rest-service/controllers"
+	"github.com/c0dect/basic-rest-service/controllers"
 
 	"github.com/gorilla/mux"
 )
