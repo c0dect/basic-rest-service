@@ -12,7 +12,6 @@ type ProductDAL struct {
 }
 
 func (prodDAL *ProductDAL) AddProduct(prod *models.Product) (newProduct *models.Product) {
-	//context := appengine.NewContext
 	return nil
 }
 
