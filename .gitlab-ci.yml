@@ -1,0 +1,5 @@
+deployment:
+  appengine:
+    branch: development
+    commands:
+      - $HOME/google_appengine/appcfg.py update -A $APP_ID update server/
