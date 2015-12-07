@@ -8,30 +8,30 @@ import (
 	"github.com/gorilla/mux"
 )
 
-var routes = Routes{
+var userRoutes = Routes{
 	Route{
-		"Default",
-		"GET",
-		"/",
-		controllers.Index,
-	},
-	Route{
-		"ProductIndex",
-		"GET",
-		"/products",
-		controllers.GetProducts,
-	},
-	Route{
-		"CreateProduct",
+		"Registration",
 		"POST",
-		"/products",
-		controllers.CreateProduct,
+		"/users",
+		controllers.Register,
+	},
+	Route{
+		"Login",
+		"POST",
+		"/users/login",
+		controllers.Login,
+	},
+	Route{
+		"Logout",
+		"POST",
+		"/users/logout",
+		controllers.Logout,
 	},
 }
 
-func SetProductRoutes(router *mux.Router) *mux.Router {
+func SetUserRoutes(router *mux.Router) *mux.Router {
 	//router = mux.NewRouter()
-	for _, route := range routes {
+	for _, route := range userRoutes {
 		var handler http.Handler
 
 		handler = route.HandlerFunc
