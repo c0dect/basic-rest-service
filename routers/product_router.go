@@ -25,7 +25,7 @@ var routes = Routes{
 		"CreateProduct",
 		"POST",
 		"/products",
-		controllers.CreateProduct,
+		controllers.AuthenticateUser(controllers.CreateProduct),
 	},
 }
 
