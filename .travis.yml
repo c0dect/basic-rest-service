@@ -16,4 +16,6 @@ install:
 # Run build and tests
 script:
     #- ./go_appengine/goapp test ./tests; # If you are testing
-    - ./go_appengine/goapp deploy server/ ; # Wherever you keep your stuff
+    #- ./go_appengine/goapp deploy server/ ; # Wherever you keep your stuff
+     - cd server
+     - go build	
