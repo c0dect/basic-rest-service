@@ -58,7 +58,7 @@ func Register(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	hashedPassword, _ := crypt([]byte(requestUser.Password))
 	requestUser.Password = string(hashedPassword)
 
-	user, err := userDal.AddUser(requestUser)
+	_, err = userDal.AddUser(requestUser)
 	if err != nil {
 		responseError := ErrInternalServer
 		responseError.Error = err
@@ -67,7 +67,7 @@ func Register(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
-	if err := json.NewEncoder(w).Encode(user); err != nil {
+	if err := json.NewEncoder(w).Encode("Success"); err != nil {
 		panic(err)
 	}
 

@@ -35,14 +35,17 @@ func (userDal *userDAL) AddUser(user models.User) (newUser models.User, err erro
 }
 
 func (userDal *userDAL) CheckIfUsernameExists(username string) bool {
+	log.Println(username)
+
 	query := datastore.NewQuery(entity_product).Filter("Username =", username)
 
 	var users []models.User
 	_, err := query.GetAll(userDal.context, &users)
 	log.Println(users)
+	log.Println(len(users))
 
 	if len(users) > 0 || err != nil {
-		return false
+		return true
 	}
-	return true
+	return false
 }
