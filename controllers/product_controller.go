@@ -125,7 +125,7 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request, next http.HandlerFunc
 	productDAL := dal.NewProductDAL(context)
 	product, err := productDAL.UpdateProduct(productId, requestProduct)
 	if err != nil {
-		log.Println(err)
+		//log.Println(err)
 		responseError := ErrInternalServer
 		responseError.Error = err
 		WriteError(w, responseError)

@@ -1,6 +1,7 @@
 package dal
 
 import (
+	"errors"
 	"github.com/c0dect/basic-rest-service/models"
 	"golang.org/x/net/context"
 	"google.golang.org/appengine/datastore"
@@ -51,7 +52,7 @@ func (prodDAL *productDAL) GetProduct(productId string) (models.Product, error) 
 
 	prodId, err := strconv.Atoi(productId)
 	if err != nil {
-		return models.Product{}, err
+		return models.Product{}, errors.New("Invalid Product Id")
 	}
 
 	query := datastore.NewQuery(entity_product).Filter("ProductId =", prodId)
@@ -59,8 +60,8 @@ func (prodDAL *productDAL) GetProduct(productId string) (models.Product, error) 
 	var products []models.Product
 	_, err = query.GetAll(prodDAL.context, &products)
 	log.Println(products)
-	if len(products) != 1 || err != nil {
-		return models.Product{}, err
+	if len(products) == 0 || err != nil {
+		return models.Product{}, errors.New("Product not found")
 	}
 
 	return products[0], nil
@@ -70,7 +71,7 @@ func (prodDAL *productDAL) DeleteProduct(productId string) (models.Product, erro
 
 	prodId, err := strconv.Atoi(productId)
 	if err != nil {
-		return models.Product{}, err
+		return models.Product{}, errors.New("Invalid Product Id")
 	}
 
 	query := datastore.NewQuery(entity_product).Filter("ProductId =", prodId)
@@ -78,8 +79,8 @@ func (prodDAL *productDAL) DeleteProduct(productId string) (models.Product, erro
 	var products []models.Product
 	keys, err := query.GetAll(prodDAL.context, &products)
 	log.Println(keys)
-	if len(products) != 1 {
-		return models.Product{}, err
+	if len(products) == 0 {
+		return models.Product{}, errors.New("Product not found")
 	}
 	err = datastore.Delete(prodDAL.context, keys[0])
 	log.Println(err)
@@ -93,7 +94,7 @@ func (prodDAL *productDAL) UpdateProduct(productId string, requestProduct models
 
 	prodId, err := strconv.Atoi(productId)
 	if err != nil {
-		return models.Product{}, err
+		return models.Product{}, errors.New("Invalid Product Id")
 	}
 
 	query := datastore.NewQuery(entity_product).Filter("ProductId =", prodId)
@@ -101,8 +102,8 @@ func (prodDAL *productDAL) UpdateProduct(productId string, requestProduct models
 	var products []models.Product
 	keys, err := query.GetAll(prodDAL.context, &products)
 	log.Println(keys)
-	if len(products) != 1 {
-		return models.Product{}, err
+	if len(products) == 0 {
+		return models.Product{}, errors.New("Product not found")
 	}
 	log.Println(requestProduct)
 

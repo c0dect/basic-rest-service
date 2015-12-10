@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"errors"
+	"github.com/c0dect/basic-rest-service/dal"
 	"github.com/c0dect/basic-rest-service/models"
 	"golang.org/x/crypto/bcrypt"
 	"golang.org/x/net/context"
@@ -43,11 +44,21 @@ func Register(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 		return
 	}
 
+	userDal := dal.NewUserDAL(context)
+	usernameExists := userDal.CheckIfUsernameExists(requestUser.Username)
+
+	if usernameExists {
+		responseError := &models.Error{}
+		responseError.Message = "Username already exists"
+		responseError.Code = 400
+		WriteError(w, responseError)
+		return
+	}
+
 	hashedPassword, _ := crypt([]byte(requestUser.Password))
 	requestUser.Password = string(hashedPassword)
 
-	userKey := datastore.NewIncompleteKey(context, USER, nil)
-	userKey, err = datastore.Put(context, userKey, &requestUser)
+	user, err := userDal.AddUser(requestUser)
 	if err != nil {
 		responseError := ErrInternalServer
 		responseError.Error = err
@@ -56,7 +67,7 @@ func Register(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
-	if err := json.NewEncoder(w).Encode(requestUser); err != nil {
+	if err := json.NewEncoder(w).Encode(user); err != nil {
 		panic(err)
 	}
 

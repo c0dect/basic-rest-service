@@ -2,9 +2,9 @@ package controllers
 
 import (
 	"encoding/json"
-	"net/http"
-
 	"github.com/c0dect/basic-rest-service/models"
+	"log"
+	"net/http"
 )
 
 var (
@@ -15,6 +15,7 @@ var (
 
 func WriteError(w http.ResponseWriter, err *models.Error) {
 	w.Header().Set("Content-Type", "application/json")
+	log.Println(err.Error)
 	w.WriteHeader(err.Code)
 	json.NewEncoder(w).Encode(models.Errors{[]*models.Error{err}})
 }
