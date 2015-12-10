@@ -11,6 +11,8 @@ install:
     - go get github.com/gorilla/mux
     - go get google.golang.org/appengine
     - go get google.golang.org/appengine/datastore
+    - go get github.com/codegangsta/negroni
+    - go get golang.org/x/net/context
 # Run build and tests
 script:
     #- ./go_appengine/goapp test ./tests; # If you are testing
