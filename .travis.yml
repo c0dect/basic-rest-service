@@ -13,6 +13,8 @@ install:
     - go get google.golang.org/appengine/datastore
     - go get github.com/codegangsta/negroni
     - go get golang.org/x/net/context
+    - go get github.com/dgrijalva/jwt-go
+    - go get golang.org/x/crypto/bcrypt
 # Run build and tests
 script:
     #- ./go_appengine/goapp test ./tests; # If you are testing
