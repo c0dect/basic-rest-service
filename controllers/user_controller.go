@@ -30,7 +30,7 @@ func crypt(password []byte) ([]byte, error) {
 	return bcrypt.GenerateFromPassword(password, bcrypt.DefaultCost)
 }
 
-func Register(w http.ResponseWriter, r *http.Request) {
+func Register(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	context := appengine.NewContext(r)
 	requestUser := models.User{}
 	decoder := json.NewDecoder(r.Body)
@@ -62,7 +62,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func Login(w http.ResponseWriter, r *http.Request) {
+func Login(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	context := appengine.NewContext(r)
 	requestUser := models.User{}
 	decoder := json.NewDecoder(r.Body)
@@ -90,7 +90,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func Logout(w http.ResponseWriter, r *http.Request) {
+func Logout(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 
 }
 

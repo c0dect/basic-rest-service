@@ -1,8 +1,7 @@
 package routers
 
 import (
-	"net/http"
-
+	"github.com/codegangsta/negroni"
 	"github.com/gorilla/mux"
 )
 
@@ -10,7 +9,7 @@ type Route struct {
 	Name        string
 	Method      string
 	Pattern     string
-	HandlerFunc http.HandlerFunc
+	HandlerFunc *negroni.Negroni
 }
 
 type Routes []Route

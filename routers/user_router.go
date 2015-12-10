@@ -1,10 +1,8 @@
 package routers
 
 import (
-	"net/http"
-
 	"github.com/c0dect/basic-rest-service/controllers"
-
+	"github.com/codegangsta/negroni"
 	"github.com/gorilla/mux"
 )
 
@@ -13,34 +11,35 @@ var userRoutes = Routes{
 		"Registration",
 		"POST",
 		"/users",
-		controllers.Register,
+		negroni.New(
+			negroni.HandlerFunc(controllers.Register),
+		),
 	},
 	Route{
 		"Login",
 		"POST",
 		"/users/login",
-		controllers.Login,
+		negroni.New(
+			negroni.HandlerFunc(controllers.Login),
+		),
 	},
 	Route{
 		"Logout",
 		"POST",
 		"/users/logout",
-		controllers.Logout,
+		negroni.New(
+			negroni.HandlerFunc(controllers.AuthenticateUser),
+			negroni.HandlerFunc(controllers.Logout),
+		),
 	},
 }
 
 func SetUserRoutes(router *mux.Router) *mux.Router {
-	//router = mux.NewRouter()
 	for _, route := range userRoutes {
-		var handler http.Handler
-
-		handler = route.HandlerFunc
-
 		router.
+			Handle(route.Pattern, route.HandlerFunc).
 			Methods(route.Method).
-			Path(route.Pattern).
-			Name(route.Name).
-			Handler(handler)
+			Name(route.Name)
 	}
 	return router
 }

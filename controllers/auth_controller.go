@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	//"crypto/rsa"
-	//"github.com/c0dect/basic-rest-service/models"
 	"bufio"
 	"crypto/rsa"
 	"crypto/x509"
@@ -10,7 +8,6 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 	"net/http"
 	"os"
-	//"path/filepath"
 	"time"
 )
 
@@ -32,7 +29,6 @@ func InitJWTConfiguration() *JWTKeys {
 
 func (jwtConfig *JWTKeys) GenerateToken(userId string) (string, error) {
 	token := jwt.New(jwt.SigningMethodRS512)
-	//token.Claims["exp"] = time.Now().Add(time.Hour * time.Duration(settings.Get().JWTExpirationDelta)).Unix()
 	token.Claims["iat"] = time.Now().Unix()
 	token.Claims["sub"] = userId
 	tokenString, err := token.SignedString(jwtConfig.privateKey)
@@ -44,24 +40,21 @@ func (jwtConfig *JWTKeys) GenerateToken(userId string) (string, error) {
 	return tokenString, nil
 }
 
-func AuthenticateUser(nextMethod http.HandlerFunc) http.HandlerFunc {
+func AuthenticateUser(w http.ResponseWriter, r *http.Request, nextMethod http.HandlerFunc) {
 	jwtConfig := InitJWTConfiguration()
-	return func(w http.ResponseWriter, r *http.Request) {
-		token, err := jwt.ParseFromRequest(r, func(token *jwt.Token) (interface{}, error) {
-			return jwtConfig.PublicKey, nil
-		})
-		if err != nil || !token.Valid {
-			responseError := ErrUnauthorized
-			responseError.Error = err
-			WriteError(w, responseError)
-			return
-		}
-		nextMethod(w, r)
+	token, err := jwt.ParseFromRequest(r, func(token *jwt.Token) (interface{}, error) {
+		return jwtConfig.PublicKey, nil
+	})
+	if err != nil || !token.Valid {
+		responseError := ErrUnauthorized
+		responseError.Error = err
+		WriteError(w, responseError)
+		return
 	}
+	nextMethod(w, r)
 }
 
 func getPrivateKey() *rsa.PrivateKey {
-	//rootPath, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 	privateKeyFile, err := os.Open("keys/demo.rsa")
 	if err != nil {
 		panic(err)
@@ -88,7 +81,6 @@ func getPrivateKey() *rsa.PrivateKey {
 }
 
 func getPublicKey() *rsa.PublicKey {
-	//rootPath, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 	publicKeyFile, err := os.Open("keys/demo.rsa.pub")
 	if err != nil {
 		panic(err)
