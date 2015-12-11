@@ -12,7 +12,6 @@ var routes = Routes{
 		"GET",
 		"/",
 		negroni.New(
-			negroni.HandlerFunc(controllers.AuthenticateUser),
 			negroni.HandlerFunc(controllers.Index),
 		),
 	},

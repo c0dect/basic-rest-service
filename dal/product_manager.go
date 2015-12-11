@@ -116,6 +116,7 @@ func (prodDAL *productDAL) UpdateProduct(productId string, requestProduct models
 	if requestProduct.Price == 0 {
 		requestProduct.Price = products[0].Price
 	}
+	requestProduct.ProductId = products[0].ProductId
 	_, err = datastore.Put(prodDAL.context, keys[0], &requestProduct)
 	log.Println(err)
 	if err != nil {
